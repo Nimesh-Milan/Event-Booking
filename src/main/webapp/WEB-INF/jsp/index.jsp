@@ -30,10 +30,10 @@
     <div class="text-3xl font-serif font-bold text-white tracking-widest">
         <span class="text-lux-gold">E</span>VENTXO </div>
     <div class="space-x-8 text-sm font-semibold tracking-wide">
-        <a href="#" class="hover:text-lux-gold transition-colors">HOME</a>
-        <a href="#" class="hover:text-lux-gold transition-colors">ALL EVENTS</a>
-        <a href="#" class="hover:text-lux-gold transition-colors">VENUES</a>
-        <a href="login.jsp" class="border border-lux-gold text-lux-gold px-6 py-2 hover:bg-lux-gold hover:text-black transition-colors">SIGN IN</a>
+        <a href="/" class="hover:text-lux-gold transition-colors">HOME</a>
+        <a href="/events" class="hover:text-lux-gold transition-colors">ALL EVENTS</a>
+        <a href="/venues" class="hover:text-lux-gold transition-colors">VENUES</a>
+        <a href="/login" class="border border-lux-gold text-lux-gold px-6 py-2 hover:bg-lux-gold hover:text-black transition-colors">SIGN IN</a>
     </div>
 </nav>
 
