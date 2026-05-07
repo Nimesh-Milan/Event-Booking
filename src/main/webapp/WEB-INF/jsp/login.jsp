@@ -1,24 +1,52 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: apple
-  Date: 4/25/2026
-  Time: 10:55 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%--
-  Created by IntelliJ IDEA.
-  User: apple
-  Date: 4/25/2026
-  Time: 10:55 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <title>Sign In - EVENTXO</title>
 </head>
-<body>
+<body class="bg-lux-dark text-white font-sans min-h-screen flex flex-col">
+    <jsp:include page="shared/header.jsp" />
 
+    <main class="flex-grow container mx-auto px-4 py-10 flex justify-center items-center">
+        <div class="bg-lux-card p-10 rounded-lg shadow-2xl w-full max-w-md border border-white/10">
+            <h2 class="text-3xl font-serif text-white mb-8 text-center tracking-wider">Welcome Back</h2>
+
+            <c:if test="${not empty successMessage}">
+                <div class="bg-green-900/30 border border-green-500/50 text-green-400 px-4 py-4 rounded mb-8 text-center text-sm font-semibold tracking-wide">
+                    <c:out value="${successMessage}" />
+                </div>
+            </c:if>
+
+            <c:if test="${not empty errorMessage}">
+                <div class="bg-red-900/30 border border-red-500/50 text-red-400 px-4 py-4 rounded mb-8 text-center text-sm font-semibold tracking-wide">
+                    <c:out value="${errorMessage}" />
+                </div>
+            </c:if>
+
+            <form action="/login" method="post" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Email Address</label>
+                    <input type="email" id="email" name="email" required
+                           class="block w-full px-4 py-3 bg-black/50 border border-white/10 rounded-none text-white focus:outline-none focus:border-lux-gold focus:ring-1 focus:ring-lux-gold transition-colors">
+                </div>
+                <div>
+                    <label for="password" class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Password</label>
+                    <input type="password" id="password" name="password" required
+                           class="block w-full px-4 py-3 bg-black/50 border border-white/10 rounded-none text-white focus:outline-none focus:border-lux-gold focus:ring-1 focus:ring-lux-gold transition-colors">
+                </div>
+                <button type="submit"
+                        class="w-full bg-lux-gold text-black font-bold tracking-widest uppercase py-4 hover:bg-lux-gold-dark transition-colors mt-4">
+                    SIGN IN
+                </button>
+            </form>
+            <p class="mt-8 text-center text-sm text-gray-400">
+                Don't have an account? <a href="/register" class="text-lux-gold hover:text-white transition-colors">Register here</a>
+            </p>
+        </div>
+    </main>
+
+    <jsp:include page="shared/footer.jsp" />
 </body>
 </html>
-
