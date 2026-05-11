@@ -1,5 +1,6 @@
 package com.sliit.eventbooking.models;
 
+
 public class Customer {
     private String customerId;
     private String fullName;
