@@ -9,6 +9,7 @@ public class Venue {
     public Venue() {
     }
 
+
     public Venue(String venueId, String locationName, int capacity, double pricePerHour) {
         this.venueId = venueId;
         this.locationName = locationName;

@@ -9,6 +9,7 @@
 <body class="bg-lux-dark text-white font-sans min-h-screen flex flex-col">
     <jsp:include page="shared/header.jsp" />
 
+
     <main class="flex-grow container mx-auto px-4 py-16">
         <div class="text-center mb-16">
             <h2 class="text-lux-gold tracking-widest text-sm font-bold uppercase mb-2">Exclusive Spaces</h2>
