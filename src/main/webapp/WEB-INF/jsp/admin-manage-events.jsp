@@ -12,9 +12,9 @@
     <main class="flex-grow container mx-auto px-4 py-16">
         <div class="flex justify-between items-center mb-12 border-b border-white/10 pb-6">
             <h1 class="text-4xl font-serif text-white shadow-sm tracking-wide">Manage Events</h1>
-            <button class="bg-lux-gold text-black font-bold tracking-widest text-xs uppercase px-6 py-3 hover:bg-lux-gold-dark transition-colors">
+            <a href="/admin/add-event" class="bg-lux-gold text-black font-bold tracking-widest text-xs uppercase px-6 py-3 hover:bg-lux-gold-dark transition-colors inline-block">
                 + CREATE EVENT
-            </button>
+            </a>
         </div>
 
         <c:choose>
