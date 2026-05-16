@@ -8,6 +8,7 @@
 <body class="bg-lux-dark text-white font-sans min-h-screen flex flex-col">
     <jsp:include page="shared/header.jsp" />
 
+
     <main class="flex-grow container mx-auto px-4 py-16 flex justify-center items-center">
         <div class="bg-lux-card p-10 rounded-lg shadow-2xl w-full max-w-md border border-white/10">
             <h2 class="text-3xl font-serif text-white mb-8 text-center tracking-wider">Add New Venue</h2>
