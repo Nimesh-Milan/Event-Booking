@@ -11,13 +11,8 @@ import java.util.List;
 
 public class FileHandler {
 
-    // 1. A constant string pointing to the DataFiles/ directory path.
     private static final String DATA_DIR = "DataFiles/";
 
-    /**
-     * 2. A method to append a new line of text to a specific file.
-     * It creates the file (and directory) if it does not exist.
-     */
     public static void saveRecord(String fileName, String data) {
         File directory = new File(DATA_DIR);
         if (!directory.exists()) {
@@ -34,15 +29,12 @@ public class FileHandler {
         }
     }
 
-    /**
-     * 3. A method that reads a file and returns all lines as a List of Strings.
-     */
     public static List<String> readAllRecords(String fileName) {
         List<String> records = new ArrayList<>();
         File file = new File(DATA_DIR + fileName);
-        
+
         if (!file.exists()) {
-            return records; // Return empty list if file doesn't exist
+            return records;
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -55,5 +47,22 @@ public class FileHandler {
             e.printStackTrace();
         }
         return records;
+    }
+
+    /**
+     * Overwrites an entire file with a new list of records.
+     * Crucial for Update and Delete operations.
+     */
+    public static void overwriteFile(String fileName, List<String> records) {
+        File file = new File(DATA_DIR + fileName);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, false))) { // false = overwrite
+            for (String record : records) {
+                bw.write(record);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Error overwriting file " + fileName + ": " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
