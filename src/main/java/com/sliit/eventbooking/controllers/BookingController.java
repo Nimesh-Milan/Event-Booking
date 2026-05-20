@@ -68,4 +68,48 @@ public class BookingController {
         model.addAttribute("tickets", tickets);
         return "my-tickets";
     }
+
+    // --- UPDATE OPERATION ---
+    @PostMapping("/update-ticket")
+    public String updateTicket(
+            @RequestParam("ticketId") String ticketId,
+            @RequestParam("newQuantity") int newQuantity) {
+
+        List<String> bookingRecords = FileHandler.readAllRecords("bookings.txt");
+        List<String> updatedRecords = new ArrayList<>();
+
+        for (String record : bookingRecords) {
+            String[] parts = record.split(",");
+            if (parts.length == 4 && parts[0].equals(ticketId)) {
+                // We found the ticket! Update the quantity
+                Ticket updatedTicket = new Ticket(parts[0], parts[1], parts[2], newQuantity);
+                updatedRecords.add(updatedTicket.toFileString());
+            } else {
+                // Not the ticket we are looking for, keep it unchanged
+                updatedRecords.add(record);
+            }
+        }
+
+        FileHandler.overwriteFile("bookings.txt", updatedRecords);
+        return "redirect:/my-tickets";
+    }
+
+    // --- DELETE OPERATION ---
+    @PostMapping("/cancel-ticket")
+    public String cancelTicket(@RequestParam("ticketId") String ticketId) {
+
+        List<String> bookingRecords = FileHandler.readAllRecords("bookings.txt");
+        List<String> updatedRecords = new ArrayList<>();
+
+        for (String record : bookingRecords) {
+            String[] parts = record.split(",");
+            // If the ticketId matches, we SKIP adding it to the updated list (thus deleting it)
+            if (parts.length == 4 && !parts[0].equals(ticketId)) {
+                updatedRecords.add(record);
+            }
+        }
+
+        FileHandler.overwriteFile("bookings.txt", updatedRecords);
+        return "redirect:/my-tickets";
+    }
 }
