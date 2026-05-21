@@ -69,47 +69,31 @@ public class BookingController {
         return "my-tickets";
     }
 
-    // --- UPDATE OPERATION ---
     @PostMapping("/update-ticket")
     public String updateTicket(
             @RequestParam("ticketId") String ticketId,
-            @RequestParam("newQuantity") int newQuantity) {
+            @RequestParam("quantity") int quantity) {
 
-        List<String> bookingRecords = FileHandler.readAllRecords("bookings.txt");
-        List<String> updatedRecords = new ArrayList<>();
-
-        for (String record : bookingRecords) {
-            String[] parts = record.split(",");
-            if (parts.length == 4 && parts[0].equals(ticketId)) {
-                // We found the ticket! Update the quantity
-                Ticket updatedTicket = new Ticket(parts[0], parts[1], parts[2], newQuantity);
-                updatedRecords.add(updatedTicket.toFileString());
-            } else {
-                // Not the ticket we are looking for, keep it unchanged
-                updatedRecords.add(record);
+        List<String> records = FileHandler.readAllRecords("bookings.txt");
+        for (int i = 0; i < records.size(); i++) {
+            if (records.get(i).startsWith(ticketId + ",")) {
+                String[] parts = records.get(i).split(",");
+                if (parts.length >= 4) {
+                    // Update only the quantity
+                    records.set(i, parts[0] + "," + parts[1] + "," + parts[2] + "," + quantity);
+                }
+                break;
             }
         }
-
-        FileHandler.overwriteFile("bookings.txt", updatedRecords);
+        FileHandler.rewriteFile("bookings.txt", records);
         return "redirect:/my-tickets";
     }
 
-    // --- DELETE OPERATION ---
     @PostMapping("/cancel-ticket")
     public String cancelTicket(@RequestParam("ticketId") String ticketId) {
-
-        List<String> bookingRecords = FileHandler.readAllRecords("bookings.txt");
-        List<String> updatedRecords = new ArrayList<>();
-
-        for (String record : bookingRecords) {
-            String[] parts = record.split(",");
-            // If the ticketId matches, we SKIP adding it to the updated list (thus deleting it)
-            if (parts.length == 4 && !parts[0].equals(ticketId)) {
-                updatedRecords.add(record);
-            }
-        }
-
-        FileHandler.overwriteFile("bookings.txt", updatedRecords);
+        List<String> records = FileHandler.readAllRecords("bookings.txt");
+        records.removeIf(record -> record.startsWith(ticketId + ","));
+        FileHandler.rewriteFile("bookings.txt", records);
         return "redirect:/my-tickets";
     }
 }

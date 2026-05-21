@@ -49,19 +49,15 @@ public class FileHandler {
         return records;
     }
 
-    /**
-     * Overwrites an entire file with a new list of records.
-     * Crucial for Update and Delete operations.
-     */
-    public static void overwriteFile(String fileName, List<String> records) {
+    public static void rewriteFile(String fileName, List<String> records) {
         File file = new File(DATA_DIR + fileName);
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, false))) { // false = overwrite
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, false))) { // false to overwrite
             for (String record : records) {
                 bw.write(record);
                 bw.newLine();
             }
         } catch (IOException e) {
-            System.err.println("Error overwriting file " + fileName + ": " + e.getMessage());
+            System.err.println("Error rewriting file " + fileName + ": " + e.getMessage());
             e.printStackTrace();
         }
     }
