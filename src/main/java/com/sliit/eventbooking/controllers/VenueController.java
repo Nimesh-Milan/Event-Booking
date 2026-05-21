@@ -15,7 +15,6 @@ import java.util.UUID;
 @Controller
 public class VenueController {
 
-
     @GetMapping("/admin/add-venue")
     public String showAddVenueForm() {
         return "admin-add-venue";
@@ -32,7 +31,7 @@ public class VenueController {
 
         FileHandler.saveRecord("venues.txt", venue.toFileString());
 
-        return "redirect:/venues";
+        return "redirect:/admin/manage-venues";
     }
 
     @GetMapping("/venues")
@@ -81,5 +80,34 @@ public class VenueController {
 
         model.addAttribute("venues", venues);
         return "admin-manage-venues";
+    }
+
+    @PostMapping("/admin/update-venue")
+    public String updateVenue(
+            @RequestParam("venueId") String venueId,
+            @RequestParam("locationName") String locationName,
+            @RequestParam("capacity") int capacity,
+            @RequestParam("pricePerHour") double pricePerHour) {
+
+        List<String> records = FileHandler.readAllRecords("venues.txt");
+        for (int i = 0; i < records.size(); i++) {
+            if (records.get(i).startsWith(venueId + ",")) {
+                String[] parts = records.get(i).split(",");
+                if (parts.length >= 4) {
+                    records.set(i, parts[0] + "," + locationName + "," + capacity + "," + pricePerHour);
+                }
+                break;
+            }
+        }
+        FileHandler.rewriteFile("venues.txt", records);
+        return "redirect:/admin/manage-venues";
+    }
+
+    @PostMapping("/admin/delete-venue")
+    public String deleteVenue(@RequestParam("venueId") String venueId) {
+        List<String> records = FileHandler.readAllRecords("venues.txt");
+        records.removeIf(record -> record.startsWith(venueId + ","));
+        FileHandler.rewriteFile("venues.txt", records);
+        return "redirect:/admin/manage-venues";
     }
 }
