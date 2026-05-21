@@ -1,6 +1,5 @@
 package com.sliit.eventbooking.models;
 
-
 public class Customer {
     private String customerId;
     private String fullName;
@@ -52,4 +51,5 @@ public class Customer {
     public String toFileString() {
         return customerId + "," + fullName + "," + email + "," + password;
     }
+
 }
