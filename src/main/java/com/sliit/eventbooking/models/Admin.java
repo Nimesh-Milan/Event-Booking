@@ -42,4 +42,3 @@ public class Admin {
         return adminId + "," + username + "," + roleLevel;
     }
 }
-
