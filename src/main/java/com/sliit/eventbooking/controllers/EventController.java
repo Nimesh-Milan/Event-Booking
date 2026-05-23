@@ -30,7 +30,7 @@ public class EventController {
         List<Event> events = new ArrayList<>();
 
         for (String record : eventRecords) {
-            String[] parts = record.split(",");
+            String[] parts = record.split("\\|");
             if (parts.length == 4) {
                 try {
                     String eventId = parts[0];
@@ -56,7 +56,7 @@ public class EventController {
         List<Event> events = new ArrayList<>();
 
         for (String record : eventRecords) {
-            String[] parts = record.split(",");
+            String[] parts = record.split("\\|");
             if (parts.length == 4) {
                 try {
                     String eventId = parts[0];
@@ -65,7 +65,7 @@ public class EventController {
                     int availableTickets = Integer.parseInt(parts[3]);
                     events.add(new Event(eventId, title, date, availableTickets));
                 } catch (NumberFormatException e) {
-                    System.err.println("Error parsing ticket count for event: " + record);
+                    System.err.println("Error parsing event record: " + record);
                 }
             }
         }
@@ -74,24 +74,44 @@ public class EventController {
         return "admin-manage-events";
     }
 
-    @GetMapping("/admin/add-event")
-    public String showAddEventForm() {
-        return "admin-add-event";
-    }
-
     @PostMapping("/admin/add-event")
     public String addEvent(
             @RequestParam("title") String title,
             @RequestParam("date") String date,
             @RequestParam("availableTickets") int availableTickets) {
-
-        // Generate a random eventId or you could format it like ev-009
-        String eventId = "ev-" + UUID.randomUUID().toString().substring(0, 5);
         
+        String eventId = UUID.randomUUID().toString();
         Event event = new Event(eventId, title, date, availableTickets);
-        
         FileHandler.saveRecord("events.txt", event.toFileString());
+        return "redirect:/admin/manage-events";
+    }
 
+    @PostMapping("/admin/update-event")
+    public String updateEvent(
+            @RequestParam("eventId") String eventId,
+            @RequestParam("title") String title,
+            @RequestParam("date") String date,
+            @RequestParam("availableTickets") int availableTickets) {
+            
+        List<String> records = FileHandler.readAllRecords("events.txt");
+        for (int i = 0; i < records.size(); i++) {
+            if (records.get(i).startsWith(eventId + "|")) {
+                String[] parts = records.get(i).split("\\|");
+                if (parts.length >= 4) {
+                    records.set(i, parts[0] + "|" + title + "|" + date + "|" + availableTickets);
+                }
+                break;
+            }
+        }
+        FileHandler.rewriteFile("events.txt", records);
+        return "redirect:/admin/manage-events";
+    }
+
+    @PostMapping("/admin/delete-event")
+    public String deleteEvent(@RequestParam("eventId") String eventId) {
+        List<String> records = FileHandler.readAllRecords("events.txt");
+        records.removeIf(record -> record.startsWith(eventId + "|"));
+        FileHandler.rewriteFile("events.txt", records);
         return "redirect:/admin/manage-events";
     }
 }
