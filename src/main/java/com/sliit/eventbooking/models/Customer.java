@@ -51,5 +51,4 @@ public class Customer {
     public String toFileString() {
         return customerId + "," + fullName + "," + email + "," + password;
     }
-
 }
