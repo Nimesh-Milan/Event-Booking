@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Eventxo</title>
 </head>
 <body class="bg-brand-light text-brand-dark font-sans min-h-screen flex flex-col">
@@ -44,7 +45,6 @@
             </p>
         </div>
     </main>
-
 
     <jsp:include page="shared/footer.jsp" />
 </body>
