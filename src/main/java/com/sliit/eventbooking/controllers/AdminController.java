@@ -32,7 +32,8 @@ public class AdminController {
         // For demonstration, a simple hardcoded check.
         // In a real app, you'd check against a database or admins.txt
         if ("admin".equals(username) && "admin".equals(password)) {
-            session.setAttribute("loggedInAdmin", username);
+            session.setAttribute("loggedInUser", username);
+            session.setAttribute("isAdmin", true);
             return "redirect:/admin/dashboard";
         }
 
@@ -42,7 +43,8 @@ public class AdminController {
             String[] parts = record.split(",");
             if (parts.length >= 2) {
                 if (parts[1].equals(username) && "password".equals(password)) { // Defaulting all staff passwords to 'password'
-                    session.setAttribute("loggedInAdmin", username);
+                    session.setAttribute("loggedInUser", username);
+                    session.setAttribute("isAdmin", true);
                     return "redirect:/admin/dashboard";
                 }
             }
@@ -54,10 +56,8 @@ public class AdminController {
     @GetMapping("/admin/dashboard")
     public String showAdminDashboard(Model model) {
         List<String> bookings = FileHandler.readAllRecords("bookings.txt");
-        List<String> inquiries = FileHandler.readAllRecords("inquiries.txt");
 
         model.addAttribute("totalBookings", bookings.size());
-        model.addAttribute("totalInquiries", inquiries.size());
 
         return "admin-dashboard";
     }
@@ -69,15 +69,19 @@ public class AdminController {
 
         for (String record : bookingRecords) {
             String[] parts = record.split(",");
-            if (parts.length == 4) {
+            if (parts.length >= 4) {
                 try {
                     String ticketId = parts[0];
                     String customerName = parts[1];
                     String eventName = parts[2];
                     int quantity = Integer.parseInt(parts[3]);
-                    bookings.add(new Ticket(ticketId, customerName, eventName, quantity));
+                    double price = 0.0;
+                    if (parts.length >= 5) {
+                        price = Double.parseDouble(parts[4]);
+                    }
+                    bookings.add(new Ticket(ticketId, customerName, eventName, quantity, price));
                 } catch (NumberFormatException e) {
-                    System.err.println("Error parsing quantity for ticket: " + record);
+                    System.err.println("Error parsing data for ticket: " + record);
                 }
             }
         }
